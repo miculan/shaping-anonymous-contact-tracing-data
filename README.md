@@ -10,13 +10,13 @@ To this end, several anonymization techniques are used; for instance, the "tags"
 Now, a natural question arises: _can some sensible geographic information leak, even adopting strong anonymization techniques?_ In this project we will see that the answer is: _yes_. 
 More precisely, we will see that from a (dense enough) set of anonymous contact trace data we can easily reconstruct quite precisely the geometric shape of the area from where the contact data come from. 
 
-## Contact graphs
+## Proximity graphs
 The kind of datasets we consider are relations between users, or _points_, defined by their "contacts"; in the case of tracing apps, two points are related iff they have been close enough to exhange their anonymous tags. 
-For instance, let us consider ten points randomly scattered on a 1000x1000 area, with a "contact radius" of 100:
+For instance, let us consider ten points randomly scattered on a 1000x1000 area, with a "proximity radius" of 100:
 
 ![ten points plot](https://github.com/miculan/shaping-anonymous-contact-tracing-data/blob/master/examples/tenpoints_plot.png)
 
-The corresponding relations can be represented as a undirected graph, which we call *contact graph*. We will use the common [dot notation](https://www.graphviz.org/doc/info/lang.html) for describing these graphs. Hence, the dot file corresponding to the map above is:
+The corresponding relations can be represented as a undirected graph, which we call *proximity graph*. We will describe these graphs using the common [dot notation](https://www.graphviz.org/doc/info/lang.html). Hence, the dot file corresponding to the map above is:
 ```
 graph G {
 layout = sfdp;
@@ -34,9 +34,28 @@ node [shape=point];
 9 -- 2;
 }
 ```
-This is the kind of information that we can recover by observing the exchanged tags only. In fact, as we can see, all geometric (geographic) information is lost.
+This is the kind of information that we can recover by observing the exchanged tags only. In fact, as we can see, all geometric (geographic) information is lost. 
 These graphs can be drawn using a tool like graphviz:
-![ten points map](https://github.com/miculan/shaping-anonymous-contact-tracing-data/blob/master/examples/tenpoints_map.png)
-and there is no resemblance between the contact graph and the original map. 
 
-So, apparently, our privacy is preserved. Or maybe not?
+![ten points map](https://github.com/miculan/shaping-anonymous-contact-tracing-data/blob/master/examples/tenpoints_map.png)
+
+and there is no resemblance between the proximity graph and the original map.
+
+So, our privacy is preserved: points are anonymous, and geographic information are lost. Or maybe not? What happens when we move from this small example, to something more real?
+
+# Increasing density
+
+In this section we consider the case of 15.000 points (corresponding to 15.000 devices), scattered on an area inside a square of 1000x1000 units (a unit can be 1 meter, for instance). 
+The shape of the area can be anything: a circle, a rectangle, a city center, a region, etc.
+
+Given a shape, we 
+1. generate a random map of 15.000 points within that shape
+2. derive the proximity graph for these points, with a proximity distance of 10 units (Bluetooth can easily connect over 10 meters in absence of obstacles). Of course, in the proximity graph all coordinates and distance information are lost.
+3. plot the proximity graph using a multi-scale force-directed approach (Fruchterman and Reingold, 1991). Basically, connections are seen as ``springs'', so that connected points are drawn closer to each other.
+4. compare the resulting plot with the original map.
+
+Here are some examples.
+
+!(examples/circle_plot.png)
+!(examples/circle_map.png)
+
