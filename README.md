@@ -13,7 +13,7 @@ More precisely, we will see that from a (dense enough) set of anonymous contact 
 The kind of datasets we consider are relations between users, or _points_, defined by their "contacts"; in the case of tracing apps, two points are related iff they have been close enough to exhange their anonymous tags. 
 For instance, let us consider ten points randomly scattered on a 1000x1000 area, with a "proximity radius" of 100:
 
-![ten points plot](https://github.com/miculan/shaping-anonymous-contact-tracing-data/blob/master/examples/tenpoints_plot.png)
+![ten points plot](examples/tenpoints_plot.png)
 
 The corresponding relations can be represented as a undirected graph, which we call *proximity graph*. We will describe these graphs using the common [dot notation](https://www.graphviz.org/doc/info/lang.html). Hence, the dot file corresponding to the map above is:
 ```
@@ -36,7 +36,7 @@ node [shape=point];
 This is the kind of information that we can recover by observing the exchanged tags only. In fact, as we can see, all geometric (geographic) information is lost. 
 These graphs can be drawn using a tool like graphviz:
 
-![ten points map](https://github.com/miculan/shaping-anonymous-contact-tracing-data/blob/master/examples/tenpoints_map.png)
+![ten points map](examples/tenpoints_map.png)
 
 and there is no resemblance between the proximity graph and the original map.
 
@@ -50,11 +50,24 @@ The shape of the area can be anything: a circle, a rectangle, a city center, a r
 Given a shape, we 
 1. generate a random map of 15.000 points within that shape
 2. derive the proximity graph for these points, with a proximity distance of 10 units (Bluetooth can easily connect over 10 meters in absence of obstacles). Of course, in the proximity graph all coordinates and distance information are lost.
-3. plot the proximity graph using a multi-scale force-directed approach (Fruchterman and Reingold, 1991). Basically, connections are seen as ``springs'', so that connected points are drawn closer to each other.
-4. compare the resulting plot with the original map.
+3. plot the proximity graph using a multi-scale force-directed approach (Fruchterman and Reingold, 1991). Basically, connections are seen as ``springs'', so that connected points are drawn closer to each other. 
+4. compare the resulting plot with the original shape.
 
 Here are some examples.
 
-![circle before](examples/circle_plot.png)
-![circle after](examples/circle_map.png)
+<img src="examples/circle_plot.png" width="45%"> <img src="examples/circle_map.png" width="45%">
+
+<img src="examples/rectangle_plot.png" width="45%"> <img src="examples/rectangle_map.png" width="45%">
+
+<img src="examples/triangle_plot.png" width="45%"> <img src="examples/triangle_map.png" width="45%">
+
+<img src="examples/eight_plot.png" width="45%"> <img src="examples/eight_map.png" width="45%">
+
+<img src="examples/bowtie_plot.png" width="45%"> <img src="examples/bowtie_map.png" width="45%">
+
+<img src="examples/L_plot.png" width="45%"> <img src="examples/L_map.png" width="45%">
+
+<img src="examples/T_plot.png" width="45%"> <img src="examples/T_map.png" width="45%">
+
+<img src="examples/H_plot.png" width="45%"> <img src="examples/H_map.png" width="45%">
 
