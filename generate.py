@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# generate a map of simulated points over a given area, and the corresponding proximity graph
+# (c) Marino Miculan 2020
+
 import random
 import numpy
 import matplotlib.pyplot as plt
