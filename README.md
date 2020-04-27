@@ -5,7 +5,7 @@ The actual COVID-19 pandemic has induced many governments to call for technologi
 A common problem with all these approaches is the privacy of users: we would like to trace who has been in contact with an infected patient, without revealing their real positions and movements. This is even more important in centralized-based solutions (such as PEPP-PT), where tracing data is stored "in the cloud" or on servers run either by the Government or by some private institution.
 To this end, several anonymization techniques are used; for instance, the "tags" that the apps exchange via Bluetooth, and eventually upload on the servers, are random-like strings like `387e07342c243b50a05da363f67e17ea25fe03bc`, generated on a daily base (or more often) using hash functions. Even if these tags are calculated from some private/sensitive data (e.g. phone number, IMEI, Bluetooth MAC, GPS position), it is not possible to recover such data from the hash digest. In most protocols, no other information are exchanged between apps nor are uploaded to servers. Thus the user identity cannot be associated to tags. (In centralized solutions, however, the central service may geolocalize a device when the tracing app connects to the server, either for uploading its tags or for collecting the tags that new positive patients have uploaded.)
 
-Now, a natural question arises: _can some sensible geographic information leak, even adopting strong anonymization techniques?_ In this project we will see that the answer is: yes. 
+Now, a natural question arises: _can some sensible geographic information leak, even adopting strong anonymization techniques?_ In this exercise we will see that the answer is: yes. 
 More precisely, we will see that from a (dense enough) set of anonymous contact trace data we can reconstruct (quite precisely) the geometric shape of the area from where the data come from. 
 
 ## Proximity graphs
@@ -33,11 +33,11 @@ node [shape=point];
 }
 ```
 This is the kind of information that we can recover by observing the exchanged tags only. In fact, as we can see, all geometric (geographic) information is lost. 
-These graphs can be drawn using a tool like graphviz:
+These graphs can be drawn using a tool like [graphviz](https://www.graphviz.org/):
 
 ![ten points map](examples/tenpoints_map.png)
 
-and there is no resemblance between the proximity graph and the original map.
+and we can see that there is no resemblance between the proximity graph and the original map.
 
 So, our privacy is preserved: points are anonymous, and geographic information are lost. Or maybe not? What happens when we move from this small example, to something more real?
 
@@ -49,7 +49,7 @@ The shape of the area can be anything: a circle, a rectangle, a city center, a r
 Given a shape, we 
 1. generate a random map of 15.000 points within that shape
 2. derive the proximity graph for these points, with a proximity distance of 10 units (Bluetooth can easily connect over 10 meters in absence of obstacles). Of course, in the proximity graph all coordinates and distance information are lost.
-3. plot the proximity graph using a multi-scale force-directed approach (sfdp, in graphviz). Basically, connections are seen as ``springs'', so that connected points are drawn closer to each other. 
+3. plot the proximity graph using a *multi-scale force-directed model* (`sfdp`, in graphviz). Basically, connections are seen as ``springs'', so that connected points are drawn closer to each other. (Edges are not drawn, otherwise we would just see an almost uniform black blob.)
 4. compare the resulting plot with the original shape.
 
 Here are some examples.
@@ -103,6 +103,7 @@ Parameters are hardcoded in the script (sorry), but easily tweakable:
 * DISTANCE = proximity distance
 * filter() = defines the shape of the area. Some shapes are already define, others can be added easily.
 
+Enjoy!
 
 ## Author
 [Marino Miculan](http://users.dimi.uniud.it/~marino.miculan/wordpress/)
