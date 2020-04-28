@@ -5,11 +5,14 @@
 import random
 import numpy
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle
 
-NUMPOINTS = 15000
+# parameters
+
+NUMPOINTS = 10000
 AREASIDE = 1000
 DISTANCE = 10
+
+# shape functions 
 
 def circle(cx,cy,r,x,y):
 	return (x-cx)*(x-cx) + (y-cy)*(y-cy) <= r*r
@@ -35,7 +38,7 @@ def bowtie(x,y):
 def eight(x,y):
 	return circle(300,500,250,x,y) or circle(700,500,250,x,y)
 
-# filter returns true if the point falls in the shape
+# filter returns true if the point falls within the shape
 # uncomment the desired shape, or add your own
 def filter(x,y):
 	return circle(500,500,300,x,y)
@@ -54,42 +57,47 @@ def contact(x1,y1,x2,y2):
 xpos = numpy.empty(NUMPOINTS, dtype=object)
 ypos = numpy.empty(NUMPOINTS, dtype=object)
 
-def addedges(i):
-	connected = False
-	for j in range(0,i-1):
-		if contact(xpos[i],ypos[i],xpos[j],ypos[j]):
-			print i, "--", str(j)+";"
-			connected = True
-	if not connected:
-		print str(i)+";"
-
-def saveplot():
-	plt.scatter(xpos,ypos)
-	plt.gca().set_aspect('equal', adjustable='box')
-	plt.xlim(0, AREASIDE)
-	plt.ylim(0, AREASIDE)
-	plt.savefig('map.png')
+def genpoints():
+	i = 0
+	while i < NUMPOINTS:
+		x = random.randint(0,AREASIDE)
+		y = random.randint(0,AREASIDE)
+		if filter(x,y):
+			xpos[i] = x
+			ypos[i] = y
+			i = i + 1
 
 
-print(
-'''graph G {
+def outputdot():
+	print '''graph G {
 layout = sfdp;
 overlap = true;
 node [shape=point];
 edge [weight=3,style=invis];
 '''
-    )
+	for i in range(0,NUMPOINTS):
+		connected = False
+		for j in range(0,i):
+			if contact(xpos[i],ypos[i],xpos[j],ypos[j]):
+				print i, "--", str(j)+";"
+				connected = True
+		if not connected:
+			print str(i)+";"
+	print '}'
 
-i = 0
-while i < NUMPOINTS:
-	x = random.randint(0,AREASIDE)
-	y = random.randint(0,AREASIDE)
-	if filter(x,y):
-		xpos[i] = x
-		ypos[i] = y
-		addedges(i)
-		i = i + 1
 
-print '}'
+def savemap(filename):
+	plt.scatter(xpos,ypos)
+	plt.gca().set_aspect('equal', adjustable='box')
+	plt.xlim(0, AREASIDE)
+	plt.ylim(0, AREASIDE)
+	plt.savefig(filename)
 
-saveplot()
+
+######
+# main
+######
+
+genpoints()
+outputdot()
+savemap('map.png')
