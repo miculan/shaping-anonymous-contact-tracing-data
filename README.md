@@ -12,7 +12,7 @@ More precisely, we will see that from a (dense enough) set of anonymous contact 
 The kind of datasets we consider are relations between users, or _points_, defined by their "contacts"; in the case of tracing apps, two points are related iff they have been close enough to exhange their anonymous tags. 
 For instance, let us consider ten points randomly scattered on a 1000x1000 area:
 
-![ten points plot](examples/tenpoints_plot.png)
+![ten points plot](examples/tenpoints_map.png)
 
 The corresponding relation can be represented as a undirected graph, which we call *proximity graph*. We will describe these graphs using the common [dot notation](https://www.graphviz.org/doc/info/lang.html). Hence, for a "proximity radius" of 100, the dot file corresponding to the map above is:
 ```
@@ -35,7 +35,7 @@ node [shape=point];
 This is the kind of information that we can recover by observing the exchanged tags only. In fact, as we can see, all geometric (geographic) information is lost. 
 These graphs can be drawn using a tool like [graphviz](https://www.graphviz.org/):
 
-![ten points map](examples/tenpoints_map.png)
+![ten points map](examples/tenpoints_plot.png)
 
 and we can see that there is no resemblance between the proximity graph and the original map.
 
