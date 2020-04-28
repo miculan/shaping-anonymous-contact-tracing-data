@@ -6,7 +6,7 @@ A common problem with all these approaches is the privacy of users: we would lik
 To this end, several anonymization techniques are used; for instance, the "tags" that the apps exchange via Bluetooth, and eventually upload on the servers, are random-like strings like `387e07342c243b50a05da363f67e17ea25fe03bc`, generated on a daily base (or more often) using hash functions. Even if these tags are calculated from some private/sensitive data (e.g. phone number, IMEI, Bluetooth MAC, GPS position), it is not possible to recover such data from the hash digest. In most protocols, no other information are exchanged between apps nor are uploaded to servers. Thus the user identity cannot be associated to tags. (In centralized solutions, however, the central service may geolocalize a device when the tracing app connects to the server, either for uploading its tags or for collecting the tags that new positive patients have uploaded.)
 
 Now, a natural question arises: _can some sensible geographic information leak, even adopting strong anonymization techniques?_ In this exercise we will see that the answer is: yes. 
-More precisely, we will see that from a (dense enough) set of anonymous contact trace data we can reconstruct (quite precisely) the geometric shape of the area from where the data come from. 
+More precisely, we will see that from a (dense enough) set of anonymous contact trace data we can reconstruct (quite precisely) the geometric shape of the area from where the data come from. (And notice that this contact trace data can be easily collected in centralized contact tracing solution, while it would be much more difficult with truly distributed ones.)
 
 ## Proximity graphs
 The kind of datasets we consider are relations between users, or _points_, defined by their "contacts"; in the case of tracing apps, two points are related iff they have been close enough to exhange their anonymous tags. 
@@ -39,7 +39,8 @@ These graphs can be drawn using a tool like [graphviz](https://www.graphviz.org/
 
 and we can see that there is no resemblance between the proximity graph and the original map.
 
-So, our privacy is preserved: points are anonymous, and geographic information are lost. Or maybe not? What happens when we move from this small example, to something more real?
+So, our privacy is preserved: points are anonymous, and geographic information are lost.
+Or maybe not? What happens when we move from this small example, to something more real?
 
 # Increasing density
 
@@ -54,21 +55,21 @@ Given a shape, we
 
 Here are some examples.
 
-<img src="examples/circle_plot.png" width="45%"> <img src="examples/circle_map.png" width="45%">
+<img src="examples/circle_map.png" width="45%"> <img src="examples/circle_plot.png" width="45%">
 
-<img src="examples/rectangle_plot.png" width="45%"> <img src="examples/rectangle_map.png" width="45%">
+<img src="examples/rectangle_map.png" width="45%"> <img src="examples/rectangle_plot.png" width="45%">
 
-<img src="examples/triangle_plot.png" width="45%"> <img src="examples/triangle_map.png" width="45%">
+<img src="examples/triangle_map.png" width="45%"> <img src="examples/triangle_plot.png" width="45%">
 
-<img src="examples/eight_plot.png" width="45%"> <img src="examples/eight_map.png" width="45%">
+<img src="examples/eight_map.png" width="45%"> <img src="examples/eight_plot.png" width="45%">
 
-<img src="examples/bowtie_plot.png" width="45%"> <img src="examples/bowtie_map.png" width="45%">
+<img src="examples/bowtie_map.png" width="45%"> <img src="examples/bowtie_plot.png" width="45%">
 
-<img src="examples/L_plot.png" width="45%"> <img src="examples/L_map.png" width="45%">
+<img src="examples/L_map.png" width="45%"> <img src="examples/L_plot.png" width="45%">
 
-<img src="examples/T_plot.png" width="45%"> <img src="examples/T_map.png" width="45%">
+<img src="examples/T_map.png" width="45%"> <img src="examples/T_plot.png" width="45%">
 
-<img src="examples/H_plot.png" width="45%"> <img src="examples/H_map.png" width="45%">
+<img src="examples/H_map.png" width="45%"> <img src="examples/H_plot.png" width="45%">
 
 Stunning resemblance, isn't it?
 
@@ -76,8 +77,7 @@ Of course, the results may be not so close if the density is not high enough, or
 
 <img src="examples/circlelow_map.png" width="45%"> <img src="examples/circlelow_plot.png" width="45%">
 
-But we should consider that the analysis we have carried out in this small example is still primitive, and based on very limited tools. After all, I'm no big data expert :) 
-
+Moreover, we have assumed that the points do not move. A "moving" point would play havoc in the model, creating lots of connections in different locations at different times.
 
 ## Conclusions
 
@@ -86,6 +86,9 @@ In this exercise we have seen that an anonymized proximity graph can contain eno
 Once a map is obtained in this way, it can be laid over the actual map of the area of origin (e.g. using Google Maps). Thus, the (anonymous) points can be given an actual position.
 Accuracy of the result depends on the number of points (devices), and the proximity distance. 
 
+It should be observed that in order to construct the proximity graph we need to collect exchanged tags in a centralised server. This can be achieved quite easily with centralized contact tracing solution, while it would be much more difficult with truly distributed ones. 
+
+The analysis we have carried out in this small example is still primitive, and based on very limited techniques and tools. After all, I'm no big data expert :) More sophisticated techniques could be used in order to achieve a similar result, even in presence of limited data.
 Further improvements can be obtained by taking advantage of extra information, not included in the proximity graph, such as: "pinned points" (i.e., points whose coordinates are known), population distribution on the area, etc.
 
 
